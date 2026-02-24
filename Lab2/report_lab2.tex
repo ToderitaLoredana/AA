@@ -1,0 +1,349 @@
+% ============================================================
+%  ALGORITHM ANALYSIS
+% ============================================================
+
+\section{Algorithm Analysis}
+
+\subsection{Objective}
+The objective of this laboratory work is to perform an empirical analysis of sorting algorithms by comparing their execution times across different input sizes and data distributions. The algorithms under study are:
+\begin{itemize}
+    \item \textbf{Selection Sort} (chosen algorithm — simple, comparison-based, $O(n^2)$)
+    \item \textbf{Quick Sort} (divide-and-conquer, comparison-based, average $O(n \log n)$)
+    \item \textbf{Merge Sort} (divide-and-conquer, comparison-based, $O(n \log n)$)
+    \item \textbf{Heap Sort} (selection-based using a binary heap, $O(n \log n)$)
+\end{itemize}
+The goal is to validate theoretical time complexities through experimental measurements and to observe how different input properties (sorted, reversed, duplicates, negative numbers, large values, etc.) affect the performance of each algorithm.
+
+\subsection{Tasks}
+\begin{enumerate}
+    \item Implement four sorting algorithms: Selection Sort, Quick Sort, Merge Sort, and Heap Sort.
+    \item Generate test arrays of varying sizes: 100, 500, 1000, 2000, 5000, and 10000 elements.
+    \item Test each algorithm on multiple data distributions: random, sorted, reverse-sorted, nearly sorted, many duplicates, and various edge cases (negative numbers, large numbers, floats, empty arrays, etc.).
+    \item Measure execution time using high-resolution timers and average over multiple runs.
+    \item Export results to CSV and analyze the empirical data.
+    \item Compare the empirical results with the theoretical complexity of each algorithm.
+\end{enumerate}
+
+\subsection{Theoretical Notes}
+
+\subsubsection{Introduction}
+Sorting is one of the most fundamental operations in computer science. A sorting algorithm rearranges the elements of a collection into a specific order (typically non-decreasing). The efficiency of sorting algorithms is measured primarily by \textbf{time complexity} (the number of comparisons and swaps as a function of input size $n$) and \textbf{space complexity} (the amount of additional memory required).
+
+Sorting algorithms are generally classified into two categories:
+\begin{itemize}
+    \item \textbf{Comparison-based algorithms}: determine the order of elements by comparing pairs of elements. The theoretical lower bound for comparison-based sorting is $\Omega(n \log n)$.
+    \item \textbf{Non-comparison-based algorithms}: exploit properties of the data (e.g., Counting Sort, Radix Sort) and can achieve $O(n)$ in specific cases.
+\end{itemize}
+
+All four algorithms in this laboratory are comparison-based. Their complexities are summarized in Table~\ref{tab:complexity}.
+
+\begin{table}[h]
+\centering
+\caption{Time and space complexity of the implemented sorting algorithms.}
+\label{tab:complexity}
+\begin{tabular}{|l|c|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} & \textbf{Space} & \textbf{Stable} \\
+\hline
+Selection Sort & $O(n^2)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ & No \\
+\hline
+Quick Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $O(\log n)$ & No \\
+\hline
+Merge Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(n)$ & Yes \\
+\hline
+Heap Sort & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(1)$ & No \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{Comparison Metric}
+The primary comparison metric used in this laboratory is \textbf{execution time}, measured in nanoseconds using Python's \texttt{time.perf\_counter\_ns()} function, which provides the highest-resolution timer available on the system.
+
+To reduce the impact of operating system scheduling, CPU cache effects, and other sources of noise, each test is repeated $5$ times and the \textbf{average} execution time is reported. The correctness of each sort is verified after every run by checking that the output array is in non-decreasing order.
+
+Formally, the average time for algorithm $A$ on input of size $n$ is computed as:
+\[
+    \bar{T}_A(n) = \frac{1}{k} \sum_{i=1}^{k} T_A^{(i)}(n)
+\]
+where $k = 5$ is the number of runs and $T_A^{(i)}(n)$ is the measured time of the $i$-th run.
+
+\subsubsection{Input Format}
+The algorithms are tested on the following input distributions:
+
+\textbf{Standard data types:}
+\begin{itemize}
+    \item \textbf{RANDOM} — uniformly distributed random integers in $[0, 100000]$.
+    \item \textbf{SORTED} — already sorted array $[0, 1, 2, \ldots, n-1]$.
+    \item \textbf{REVERSE\_SORTED} — array sorted in descending order $[n, n-1, \ldots, 1]$.
+    \item \textbf{NEARLY\_SORTED} — sorted array with $\sim 5\%$ random swaps applied.
+    \item \textbf{MANY\_DUPLICATES} — random integers in a very small range $[0, 10]$, producing many repeated values.
+\end{itemize}
+
+\textbf{Edge cases:}
+\begin{itemize}
+    \item \textbf{NEGATIVE\_NUMBERS} — all values in $[-100000, -1]$.
+    \item \textbf{MIXED\_NEGATIVE\_POSITIVE} — values in $[-50000, 50000]$.
+    \item \textbf{BIG\_NUMBERS} — very large integers in $[10^{15}, 10^{18}]$.
+    \item \textbf{BIG\_NEGATIVE\_NUMBERS} — very large negative integers in $[-10^{18}, -10^{15}]$.
+    \item \textbf{MIXED\_BIG\_NUMBERS} — full range from $-10^{18}$ to $10^{18}$.
+    \item \textbf{SINGLE\_ELEMENT} — array with exactly one element.
+    \item \textbf{EMPTY\_ARRAY} — array with zero elements.
+    \item \textbf{ALL\_SAME} — all elements are identical (e.g., $[7, 7, 7, \ldots]$).
+    \item \textbf{TWO\_ELEMENTS} — minimal sortable array with 2 elements.
+    \item \textbf{ALL\_ZEROS} — all elements are zero.
+    \item \textbf{ALTERNATING} — alternating pattern $[1, -1, 1, -1, \ldots]$.
+    \item \textbf{FLOAT\_NUMBERS} — floating-point values in $[-100000.0, 100000.0]$.
+    \item \textbf{VERY\_SMALL\_FLOATS} — tiny floating-point values near zero ($\pm 10^{-10}$).
+    \item \textbf{INF\_VALUES} — array with \texttt{float('inf')} and \texttt{float('-inf')} injected at random positions.
+    \item \textbf{MAX\_MIN\_INT} — array containing \texttt{sys.maxsize} and \texttt{-sys.maxsize - 1}.
+\end{itemize}
+
+Array sizes tested: $n \in \{100, 500, 1000, 2000, 5000, 10000\}$ for standard types, and $n \in \{100, 500, 1000\}$ for edge cases (with fixed sizes for SINGLE\_ELEMENT, EMPTY\_ARRAY, and TWO\_ELEMENTS).
+
+
+% ============================================================
+%  IMPLEMENTATION
+% ============================================================
+
+\section{Implementation}
+
+\subsection{Selection Sort}
+
+Selection Sort is the \textbf{chosen algorithm} for this laboratory. It works by repeatedly finding the minimum element from the unsorted portion and placing it at the beginning of the unsorted portion.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item For each position $i$ from $0$ to $n-2$:
+    \begin{enumerate}
+        \item Find the index of the minimum element in the subarray $[i, n-1]$.
+        \item Swap the element at position $i$ with the minimum element.
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item Always performs exactly $\frac{n(n-1)}{2}$ comparisons, regardless of input order.
+    \item Performs at most $n-1$ swaps — the minimum among all comparison-based sorting algorithms.
+    \item \textbf{Not stable}: the swap operation can change the relative order of equal elements.
+    \item In-place: requires only $O(1)$ additional memory.
+\end{itemize}
+
+\begin{verbatim}
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index], arr[i]
+\end{verbatim}
+
+\textbf{Complexity:} $O(n^2)$ in all cases (best, average, worst). The time is independent of the input distribution because the inner loop always scans the full unsorted portion.
+
+
+\subsection{Quick Sort}
+
+Quick Sort is a divide-and-conquer algorithm that selects a \textbf{pivot} element and partitions the array into two sub-arrays: elements less than or equal to the pivot, and elements greater than the pivot. It then recursively sorts the sub-arrays.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Choose a pivot element (in our implementation: the last element).
+    \item Partition the array such that all elements $\leq$ pivot are on the left and all elements $>$ pivot are on the right.
+    \item Recursively apply Quick Sort to the left and right sub-arrays.
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item Average case $O(n \log n)$ — when the pivot divides the array roughly in half.
+    \item \textbf{Worst case $O(n^2)$} — occurs when the pivot is always the smallest or largest element (e.g., sorted or reverse-sorted input with last-element pivot selection).
+    \item Excellent cache locality due to sequential memory access during partitioning.
+    \item \textbf{Not stable}: the partitioning step can rearrange equal elements.
+    \item In-place, but requires $O(\log n)$ stack space for recursion (worst case $O(n)$).
+\end{itemize}
+
+\begin{verbatim}
+def quick_sort(arr):
+    _quick_sort(arr, 0, len(arr) - 1)
+
+def _quick_sort(arr, low, high):
+    if low < high:
+        pi = partition(arr, low, high)
+        _quick_sort(arr, low, pi - 1)
+        _quick_sort(arr, pi + 1, high)
+
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] <= pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+\end{verbatim}
+
+\textbf{Worst-case triggers in our implementation:} \texttt{SORTED}, \texttt{REVERSE\_SORTED}, \texttt{ALL\_SAME}, and \texttt{ALL\_ZEROS} all cause the Lomuto partition to produce maximally unbalanced splits of size $(n-1, 0)$, degrading performance to $O(n^2)$.
+
+
+\subsection{Merge Sort}
+
+Merge Sort is a divide-and-conquer algorithm that splits the array in half, recursively sorts each half, and then merges the two sorted halves.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item If the array has fewer than 2 elements, return (base case).
+    \item Split the array into two halves: \texttt{left} and \texttt{right}.
+    \item Recursively sort \texttt{left} and \texttt{right}.
+    \item Merge the two sorted halves back into the original array.
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item \textbf{Always $O(n \log n)$} — the division is purely positional (at the midpoint), so the split quality is independent of the data.
+    \item \textbf{Stable}: the merge step preserves the relative order of equal elements (due to the $\leq$ comparison).
+    \item \textbf{Not in-place}: requires $O(n)$ additional memory for the temporary \texttt{left} and \texttt{right} arrays.
+    \item The number of comparisons in the merge step varies slightly depending on the data, but the asymptotic complexity remains unchanged.
+\end{itemize}
+
+\begin{verbatim}
+def merge_sort(arr):
+    if len(arr) < 2:
+        return
+    mid = len(arr) // 2
+    left = arr[:mid]
+    right = arr[mid:]
+    merge_sort(left)
+    merge_sort(right)
+    merge(arr, left, right)
+
+def merge(arr, left, right):
+    i = j = k = 0
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            arr[k] = left[i]
+            i += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+    while i < len(left):
+        arr[k] = left[i]
+        i += 1
+        k += 1
+    while j < len(right):
+        arr[k] = right[j]
+        j += 1
+        k += 1
+\end{verbatim}
+
+\textbf{Complexity:} $O(n \log n)$ in all cases. The recursion always produces a balanced binary tree of depth $\log_2 n$, and each level performs $O(n)$ work during the merge phase.
+
+
+\subsection{Heap Sort}
+
+Heap Sort uses a \textbf{max-heap} data structure to sort the array. It first builds a max-heap from the input, then repeatedly extracts the maximum element and places it at the end of the array.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Build a max-heap from the array by calling \texttt{heapify} on all internal nodes from bottom to top. This takes $O(n)$ time.
+    \item For $i = n-1$ down to $1$:
+    \begin{enumerate}
+        \item Swap the root (maximum element) with element at position $i$.
+        \item Call \texttt{heapify} on the reduced heap (size $i$) to restore the heap property.
+    \end{enumerate}
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item \textbf{Always $O(n \log n)$} — the heapify operation traverses at most $\log n$ levels, and it is called $n$ times.
+    \item \textbf{In-place}: requires only $O(1)$ additional memory.
+    \item \textbf{Not stable}: the heap extraction process rearranges elements and can change the relative order of equal elements.
+    \item \textbf{Poor cache locality}: accessing children at indices $2i+1$ and $2i+2$ causes non-sequential memory access patterns, making it slower than Quick Sort in practice despite the same asymptotic complexity.
+\end{itemize}
+
+\begin{verbatim}
+def heap_sort(arr):
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+    for i in range(n - 1, 0, -1):
+        arr[0], arr[i] = arr[i], arr[0]
+        heapify(arr, i, 0)
+
+def heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+\end{verbatim}
+
+\textbf{Complexity:} $O(n \log n)$ in all cases. Building the heap is $O(n)$ (not $O(n \log n)$, as proven by the geometric series argument), and the $n-1$ extract-max operations each cost $O(\log n)$.
+
+
+\subsection{Iterative Method}
+
+The iterative approach in our implementation refers to the benchmarking and testing methodology. Each sorting algorithm is tested iteratively across:
+\begin{itemize}
+    \item 6 array sizes: $\{100, 500, 1000, 2000, 5000, 10000\}$
+    \item 5 standard data distributions + 15 edge cases
+    \item 5 repetitions per test (averaged)
+\end{itemize}
+
+The benchmarking function creates a fresh copy of the input array before each run (since all algorithms sort in-place), measures execution time in nanoseconds, and verifies correctness:
+
+\begin{verbatim}
+def benchmark(sort_func, base_array, runs):
+    total_ns = 0
+    for _ in range(runs):
+        arr = base_array.copy()
+        start = time.perf_counter_ns()
+        sort_func(arr)
+        end = time.perf_counter_ns()
+        if not is_sorted(arr):
+            raise RuntimeError(f"{sort_func.__name__} failed")
+        total_ns += (end - start)
+    return total_ns // runs
+\end{verbatim}
+
+Results are exported to a CSV file for further analysis and graph generation.
+
+
+% ============================================================
+%  CONCLUSION
+% ============================================================
+
+\section{Conclusion}
+
+In this laboratory work, four comparison-based sorting algorithms — Selection Sort, Quick Sort, Merge Sort, and Heap Sort — were implemented in Python and empirically evaluated across a wide range of input sizes, data distributions, and edge cases.
+
+The experimental results confirm the theoretical complexity analysis:
+
+\begin{itemize}
+    \item \textbf{Selection Sort} exhibited consistent $O(n^2)$ behavior across all input types, with execution time growing quadratically as array size increased. Its performance was independent of the input distribution, as expected, since it always performs $\frac{n(n-1)}{2}$ comparisons. While impractical for large datasets, it has the advantage of performing the fewest swaps ($O(n)$) among all tested algorithms.
+
+    \item \textbf{Quick Sort} was the fastest algorithm on random data due to its excellent cache locality and low constant factors. However, it degraded to $O(n^2)$ on sorted, reverse-sorted, all-same, and all-zeros inputs, confirming that the last-element pivot selection strategy is vulnerable to already-ordered data. This weakness could be mitigated by using randomized or median-of-three pivot selection.
+
+    \item \textbf{Merge Sort} demonstrated stable $O(n \log n)$ performance across all input types, making it the most predictable algorithm in the study. Its main drawback is the $O(n)$ additional memory required for the temporary arrays during the merge phase. It is also the only stable sorting algorithm among the four tested.
+
+    \item \textbf{Heap Sort} also maintained $O(n \log n)$ performance regardless of input distribution, while being fully in-place ($O(1)$ extra space). However, it was consistently slower than both Quick Sort (on favorable inputs) and Merge Sort, primarily due to poor cache locality caused by the non-sequential memory access pattern of the heap structure.
+\end{itemize}
+
+The edge case analysis revealed that all four algorithms correctly handle negative numbers, very large integers ($\pm 10^{18}$), floating-point values, infinity values, empty arrays, and single-element arrays. Notably, the \texttt{ALL\_SAME} and \texttt{ALL\_ZEROS} cases exposed Quick Sort's $O(n^2)$ degradation, while the other three algorithms remained unaffected.
+
+\textbf{Key takeaways:}
+\begin{enumerate}
+    \item No single sorting algorithm is universally optimal — the best choice depends on the input characteristics, memory constraints, and stability requirements.
+    \item Quick Sort is the best general-purpose choice for random data but requires pivot optimization for robustness.
+    \item Merge Sort is preferred when stability and guaranteed $O(n \log n)$ performance are required, at the cost of extra memory.
+    \item Heap Sort offers a good balance of guaranteed performance and in-place operation, but suffers from cache inefficiency.
+    \item Selection Sort should only be used for very small arrays or when minimizing the number of swaps is critical (e.g., when write operations are expensive).
+\end{enumerate}
+
+Overall, the empirical results align closely with the theoretical predictions, validating the importance of algorithmic complexity analysis in predicting real-world performance.
