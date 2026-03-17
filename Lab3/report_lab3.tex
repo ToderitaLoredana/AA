@@ -1,0 +1,359 @@
+% ============================================================
+%  ALGORITHM ANALYSIS — Laboratory 3
+% ============================================================
+
+\section{Algorithm Analysis}
+
+\subsection{Objective}
+The objective of this laboratory work is to perform an empirical analysis of graph traversal algorithms by measuring and comparing their execution times across different graph structures and sizes. The algorithms under study are:
+\begin{itemize}
+    \item \textbf{Breadth-First Search (BFS)} — iterative, queue-based, level-by-level traversal
+    \item \textbf{Depth-First Search — Iterative (DFS\textsubscript{iter})} — iterative, explicit stack-based traversal
+    \item \textbf{Depth-First Search — Recursive (DFS\textsubscript{rec})} — recursive traversal (tested on small graphs only)
+\end{itemize}
+The goal is to validate the theoretical time complexity $O(V + E)$ through experimental measurements and to observe how different graph topologies (sparse, dense, tree, path, cycle, grid) affect the practical performance of each algorithm.
+
+\subsection{Tasks}
+\begin{enumerate}
+    \item Implement BFS (iterative), DFS (iterative), and DFS (recursive) in Python with support for disconnected graphs.
+    \item Generate six families of test graphs: sparse random, dense random, random tree, path, cycle, and 2D grid.
+    \item Test each algorithm on node counts $n \in \{100, 500, 1000, 2000, 5000, 10000\}$.
+    \item Measure execution time using \texttt{time.perf\_counter\_ns()} and average over 5 independent runs.
+    \item Export results to CSV and produce comparison charts.
+    \item Create an animated GIF visualisation demonstrating BFS and DFS traversal on a 20-node demo graph.
+    \item Compare empirical results with theoretical complexity predictions.
+\end{enumerate}
+
+\subsection{Theoretical Notes}
+
+\subsubsection{Introduction}
+Graph traversal is the process of visiting every reachable vertex in a graph exactly once. It is a foundational operation in computer science, underpinning algorithms for shortest paths, connectivity, cycle detection, topological sorting, and more.
+
+The two classical traversal strategies differ in how they prioritise which vertex to expand next:
+\begin{itemize}
+    \item \textbf{BFS} uses a FIFO queue: it fully explores all vertices at depth $d$ before moving to depth $d+1$. This produces level-order traversal and guarantees shortest-path distances in unweighted graphs.
+    \item \textbf{DFS} uses a LIFO stack (explicit or the call stack): it dives as deep as possible along one branch before backtracking. This is natural for cycle detection, topological sorting, and strongly-connected-component algorithms.
+\end{itemize}
+
+Both algorithms share the same asymptotic complexity in terms of the number of vertices $V$ and edges $E$.
+
+\subsubsection{Complexity Summary}
+
+\begin{table}[h]
+\centering
+\caption{Time and space complexity of the implemented graph traversal algorithms.}
+\label{tab:complexity}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Best} & \textbf{Average} & \textbf{Worst} & \textbf{Space} \\
+\hline
+BFS (iterative)            & $O(V + E)$ & $O(V + E)$ & $O(V + E)$ & $O(V)$ \\
+\hline
+DFS (iterative)            & $O(V + E)$ & $O(V + E)$ & $O(V + E)$ & $O(V)$ \\
+\hline
+DFS (recursive)            & $O(V + E)$ & $O(V + E)$ & $O(V + E)$ & $O(V)$ \\
+\hline
+\end{tabular}
+\end{table}
+
+All three algorithms are linear in the size of the graph. The practical differences arise from constant factors and memory access patterns, not from asymptotic complexity.
+
+\subsubsection{Comparison Metric}
+The primary metric is \textbf{wall-clock execution time}, measured in nanoseconds via \texttt{time.perf\_counter\_ns()} and reported in milliseconds. Each test is repeated 5 times and the arithmetic mean is taken:
+\[
+    \bar{T}_A(n) = \frac{1}{k} \sum_{i=1}^{k} T_A^{(i)}(n), \quad k = 5
+\]
+A secondary metric is \textbf{nodes visited}, which verifies that all algorithms produce a complete traversal ($\text{nodes\_visited} = V$).
+
+\subsubsection{Input Format — Graph Types}
+\begin{itemize}
+    \item \textbf{SPARSE\_RANDOM} — Erdős–Rényi $G(n, p)$ with $p = 4/(n-1)$; average degree $\approx 4$, total edges $\approx 2n$.
+    \item \textbf{DENSE\_RANDOM} — Erdős–Rényi $G(n, p)$ with $p = 0.15$; total edges $\approx 0.075 \cdot n^2$.
+    \item \textbf{TREE} — Random spanning tree: node $i$ connects to a uniformly chosen parent in $[0, i-1]$. Exactly $n-1$ edges.
+    \item \textbf{PATH} — Linear chain $0 \to 1 \to \cdots \to (n-1)$. Exactly $n-1$ edges; diameter $n-1$.
+    \item \textbf{CYCLE} — Path with one additional edge $(n-1) \to 0$. Exactly $n$ edges.
+    \item \textbf{GRID} — 2D grid of side $\lfloor\sqrt{n}\rfloor$; actual node count $= \lfloor\sqrt{n}\rfloor^2$. Each node has degree 2, 3, or 4. Total edges $\approx 2n$.
+\end{itemize}
+
+Sizes tested: $n \in \{100, 500, 1000, 2000, 5000, 10000\}$. Recursive DFS is only tested for $n \leq 500$ to avoid exceeding Python's default call-stack limit.
+
+
+% ============================================================
+%  IMPLEMENTATION
+% ============================================================
+
+\section{Implementation}
+
+\subsection{Breadth-First Search (BFS)}
+
+BFS explores a graph layer by layer using a FIFO queue. Starting from a source vertex, it visits all vertices at distance 1, then distance 2, and so on.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Enqueue the start vertex; mark it as visited.
+    \item While the queue is non-empty:
+    \begin{enumerate}
+        \item Dequeue a vertex $u$.
+        \item For each unvisited neighbour $v$ of $u$: mark $v$ visited and enqueue it.
+    \end{enumerate}
+    \item Repeat from any unvisited vertex to handle disconnected graphs.
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item \textbf{Level-order traversal}: vertices are visited in non-decreasing order of their distance from the source.
+    \item \textbf{Shortest-path property}: the first time BFS reaches a vertex, it has found the shortest (hop-count) path in an unweighted graph.
+    \item \textbf{Queue memory}: at peak, the queue may hold all vertices in one frontier level — $O(V)$ in the worst case.
+    \item Well-suited to dense graphs where the frontier stays small relative to the total number of edges processed.
+\end{itemize}
+
+\begin{verbatim}
+def bfs(graph, start=0):
+    visited = set()
+    order = []
+
+    def _bfs_component(src):
+        queue = collections.deque([src])
+        visited.add(src)
+        while queue:
+            node = queue.popleft()
+            order.append(node)
+            for nb in graph[node]:
+                if nb not in visited:
+                    visited.add(nb)
+                    queue.append(nb)
+
+    _bfs_component(start)
+    for node in graph:           # handle disconnected components
+        if node not in visited:
+            _bfs_component(node)
+    return order, len(order)
+\end{verbatim}
+
+\textbf{Complexity:} $O(V + E)$. Every vertex is enqueued and dequeued once ($O(V)$); every edge is inspected at most twice ($O(E)$) because the graph is undirected.
+
+
+\subsection{Depth-First Search — Iterative}
+
+The iterative DFS replaces the call stack of the recursive variant with an explicit LIFO stack, avoiding Python's recursion limit and making it applicable to arbitrarily large graphs.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Push the start vertex onto the stack.
+    \item While the stack is non-empty:
+    \begin{enumerate}
+        \item Pop a vertex $u$.
+        \item If $u$ has already been visited, skip it.
+        \item Mark $u$ as visited; push its unvisited neighbours (in reverse order) onto the stack.
+    \end{enumerate}
+    \item Repeat from any unvisited vertex for disconnected graphs.
+\end{enumerate}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item \textbf{Deep traversal}: explores one path to its full depth before backtracking, producing a different traversal order from BFS.
+    \item \textbf{No recursion limit}: safe for graphs with thousands of nodes.
+    \item The explicit stack may temporarily hold more entries than the implicit call stack of the recursive version due to pushing all neighbours at once.
+    \item Especially efficient on sparse graphs (trees, paths, grids) where stack depth remains bounded.
+\end{itemize}
+
+\begin{verbatim}
+def dfs_iterative(graph, start=0):
+    visited = set()
+    order = []
+
+    def _dfs_component(src):
+        stack = [src]
+        while stack:
+            node = stack.pop()
+            if node in visited:
+                continue
+            visited.add(node)
+            order.append(node)
+            for nb in reversed(graph[node]):
+                if nb not in visited:
+                    stack.append(nb)
+
+    _dfs_component(start)
+    for node in graph:
+        if node not in visited:
+            _dfs_component(node)
+    return order, len(order)
+\end{verbatim}
+
+\textbf{Complexity:} $O(V + E)$. The same edge-inspection argument as BFS applies; each vertex is processed once.
+
+
+\subsection{Depth-First Search — Recursive}
+
+The recursive DFS is the canonical textbook implementation. Python's call stack acts as the implicit DFS stack.
+
+\textbf{Algorithm:}
+\begin{enumerate}
+    \item Mark the current vertex as visited.
+    \item For each unvisited neighbour, recurse.
+    \item After the recursion terminates, the vertex is fully explored.
+\end{enumerate}
+
+\begin{verbatim}
+def dfs_recursive(graph, start=0):
+    visited = set()
+    order = []
+
+    def _dfs(node):
+        visited.add(node)
+        order.append(node)
+        for nb in graph[node]:
+            if nb not in visited:
+                _dfs(nb)
+
+    _dfs(start)
+    for node in graph:
+        if node not in visited:
+            _dfs(node)
+    return order, len(order)
+\end{verbatim}
+
+\textbf{Key characteristics:}
+\begin{itemize}
+    \item Simple and readable; directly mirrors the mathematical definition.
+    \item \textbf{Stack overflow risk}: Python's default recursion limit is 1000. On a PATH graph of 1001 nodes the recursion depth equals $n$, causing a \texttt{RecursionError}. In this study, recursive DFS is restricted to $n \leq 500$.
+    \item Slightly lower overhead than the iterative version on small graphs because no auxiliary stack object is needed.
+\end{itemize}
+
+\textbf{Complexity:} $O(V + E)$, with an $O(V)$ space cost from the call stack.
+
+
+\subsection{GIF Visualisation}
+
+In addition to the performance benchmarks, an animated GIF was produced for each algorithm on a hand-crafted 20-node graph. The graph has a tree skeleton with two cross-edges, making the difference between BFS (level-by-level) and DFS (depth-first) clearly visible.
+
+Each frame of the animation colour-codes vertices as follows:
+\begin{itemize}
+    \item \textbf{Light grey} — not yet discovered
+    \item \textbf{Gold} — in the queue (BFS) or on the stack (DFS), waiting to be processed
+    \item \textbf{Orange-red} — the vertex currently being expanded
+    \item \textbf{Green} — fully visited
+\end{itemize}
+
+The animation is generated with \texttt{matplotlib.animation.FuncAnimation} and saved as a GIF via the \texttt{Pillow} writer at 2 frames per second.
+
+\subsection{Benchmarking Method}
+
+\begin{verbatim}
+def benchmark_single(algo_func, graph):
+    total_ns = 0
+    for _ in range(RUNS):
+        start = time.perf_counter_ns()
+        _, nv = algo_func(graph)
+        end   = time.perf_counter_ns()
+        total_ns += (end - start)
+    return total_ns // RUNS, nv
+\end{verbatim}
+
+The same graph object is reused across all 5 runs for a given $(algorithm, graph\_type, n)$ triple. Unlike sorting (which modifies the input in-place), graph traversal is read-only, so no copy is needed. The graph is regenerated once per $(graph\_type, n)$ pair; all three algorithms are then benchmarked on the same instance.
+
+
+% ============================================================
+%  EMPIRICAL RESULTS
+% ============================================================
+
+\section{Empirical Results}
+
+\subsection{Effect of Graph Density}
+
+The most striking result is the divergence between sparse and dense graphs. On \textbf{SPARSE\_RANDOM} graphs ($|E| \approx 2n$), both BFS and DFS\textsubscript{iter} grow near-linearly: at $n = 10000$, BFS takes 2.58 ms and DFS takes 3.69 ms. On \textbf{DENSE\_RANDOM} graphs ($|E| \approx 0.075 n^2$), the growth is quadratic in $n$ — consistent with $O(V + E) = O(n^2)$: BFS reaches 328.6 ms and DFS\textsubscript{iter} reaches 1200.8 ms at $n = 10000$.
+
+This confirms that the running time is dominated by the number of edges, not the number of vertices alone.
+
+\subsection{BFS vs. DFS — Constant-Factor Difference}
+
+Across all graph types and sizes, \textbf{BFS is consistently faster than DFS\textsubscript{iter}} by a factor of roughly $1.3\times$–$3.6\times$:
+\begin{itemize}
+    \item On sparse/tree/path/cycle/grid graphs, the ratio is $\approx 1.3$–$1.5\times$.
+    \item On dense graphs the gap widens significantly ($\approx 3.6\times$ at $n = 10000$).
+\end{itemize}
+
+The reason for the BFS advantage lies in data structure access patterns. BFS uses a \texttt{collections.deque}, which provides $O(1)$ amortised \texttt{popleft()} thanks to a doubly-linked-list of fixed blocks. DFS\textsubscript{iter} uses a Python list as a stack; while individual \texttt{pop()} from the end is $O(1)$, the list can grow large on dense graphs (all neighbours pushed eagerly), increasing memory pressure and cache misses.
+
+\subsection{Recursive vs. Iterative DFS}
+
+On the graphs where both were tested ($n \leq 500$), DFS\textsubscript{rec} is \textbf{slightly faster than or comparable to} DFS\textsubscript{iter}:
+\begin{itemize}
+    \item At $n = 500$, SPARSE\_RANDOM: DFS\textsubscript{rec} = 0.134 ms, DFS\textsubscript{iter} = 0.173 ms.
+    \item At $n = 500$, DENSE\_RANDOM: DFS\textsubscript{rec} = 0.717 ms, DFS\textsubscript{iter} = 1.769 ms.
+\end{itemize}
+
+The recursive version avoids the overhead of explicit stack management (no list append/pop calls); instead, Python's native call-frame mechanism handles the stack implicitly at a lower per-entry cost for small graphs.
+
+\subsection{Graph Topology Effects}
+
+All sparse topologies (TREE, PATH, CYCLE, GRID) produce very similar timing curves because they all have $|E| = \Theta(n)$:
+\begin{itemize}
+    \item At $n = 10000$: BFS ranges from 1.80 ms (PATH) to 2.59 ms (SPARSE\_RANDOM), and DFS\textsubscript{iter} ranges from 2.35 ms (PATH) to 3.69 ms (SPARSE\_RANDOM).
+    \item PATH and CYCLE graphs are the fastest because their adjacency lists have exactly 2 entries per node, minimising inner-loop work.
+    \item TREE graphs show slightly higher variance (one run at $n = 100$ measured 0.214 ms for BFS due to OS scheduling noise).
+\end{itemize}
+
+\subsection{Empirical Data Table}
+
+Selected results for BFS and DFS\textsubscript{iter} on \textbf{SPARSE\_RANDOM} and \textbf{DENSE\_RANDOM}:
+
+\begin{table}[h]
+\centering
+\caption{Average execution time (ms) for BFS and DFS\textsubscript{iter} on random graphs, averaged over 5 runs.}
+\label{tab:results}
+\begin{tabular}{|c|l|r|r|}
+\hline
+\textbf{$n$} & \textbf{Graph Type} & \textbf{BFS (ms)} & \textbf{DFS\textsubscript{iter} (ms)} \\
+\hline
+100   & SPARSE\_RANDOM & 0.020  & 0.031  \\
+500   & SPARSE\_RANDOM & 0.113  & 0.173  \\
+1000  & SPARSE\_RANDOM & 0.239  & 0.368  \\
+2000  & SPARSE\_RANDOM & 0.650  & 0.748  \\
+5000  & SPARSE\_RANDOM & 1.353  & 1.990  \\
+10000 & SPARSE\_RANDOM & 2.582  & 3.694  \\
+\hline
+100   & DENSE\_RANDOM  & 0.034  & 0.079  \\
+500   & DENSE\_RANDOM  & 0.692  & 1.769  \\
+1000  & DENSE\_RANDOM  & 2.817  & 7.133  \\
+2000  & DENSE\_RANDOM  & 11.424 & 29.428 \\
+5000  & DENSE\_RANDOM  & 76.698 & 188.183 \\
+10000 & DENSE\_RANDOM  & 328.597 & 1200.757 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+% ============================================================
+%  CONCLUSION
+% ============================================================
+
+\section{Conclusion}
+
+In this laboratory, Breadth-First Search and two variants of Depth-First Search were implemented in Python and empirically evaluated across six graph families and six node-count levels.
+
+The experimental results confirm the theoretical analysis:
+
+\begin{itemize}
+    \item \textbf{Both BFS and DFS run in $O(V + E)$ time.} On sparse graphs ($|E| = \Theta(V)$), the measured time grows linearly with $n$. On dense graphs ($|E| = \Theta(V^2)$), the measured time grows quadratically with $n$, exactly as $O(V + E) = O(V^2)$ predicts.
+
+    \item \textbf{BFS is faster than DFS\textsubscript{iter} in practice} by a constant factor across all tested configurations. The primary reason is the lower overhead of \texttt{collections.deque} compared to a Python list used as a stack, particularly when the graph is dense and the stack grows large.
+
+    \item \textbf{DFS\textsubscript{rec} is slightly faster than DFS\textsubscript{iter} on small graphs} because it avoids explicit stack management. However, it is unsafe for large graphs due to Python's recursion depth limit, making DFS\textsubscript{iter} the only practical DFS choice for $n \gtrsim 500$.
+
+    \item \textbf{Graph topology matters for constant factors, not asymptotic complexity.} PATH and CYCLE graphs (degree-2 nodes) are fastest; DENSE\_RANDOM graphs (degree $\approx 0.15n$) are slowest. Trees, sparse random graphs, and grids all perform similarly.
+
+    \item \textbf{Edge count is the dominant cost driver.} A 10 000-node dense graph (with $\approx 7.5$ million edges) is more than 100$\times$ slower than a 10 000-node sparse graph (with $\approx 20\,000$ edges), despite the same vertex count.
+\end{itemize}
+
+\textbf{Key takeaways:}
+\begin{enumerate}
+    \item When the graph is guaranteed to be sparse (e.g., road networks, social networks with bounded degree), both BFS and DFS are practical at millions of vertices.
+    \item Prefer BFS when shortest-path distances are needed or when memory bandwidth is not a bottleneck (BFS's frontier is compact at each level).
+    \item Prefer iterative DFS when deep traversal is required (e.g., cycle detection, topological sort) and graph size may exceed Python's stack limit.
+    \item Avoid recursive DFS for graphs with $n > 500$ unless the recursion limit is explicitly raised and the maximum depth is bounded.
+    \item For dense graphs, algorithmic improvements (e.g., adjacency matrices, bit-parallel BFS) can reduce the constant factor significantly; the $O(V + E)$ bound itself cannot be improved for general traversal.
+\end{enumerate}
+
+Overall, the empirical measurements align closely with the theoretical predictions, reinforcing the importance of considering both vertex and edge counts when analysing graph algorithms in practice.

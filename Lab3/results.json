@@ -1,0 +1,586 @@
+{
+  "sparse_scaling": {
+    "sizes": [
+      100,
+      500,
+      1000,
+      2000,
+      5000,
+      10000
+    ],
+    "bfs": [
+      {
+        "avg_time_ms": 0.02774999999999884,
+        "min_time_ms": 0.02487499999999712,
+        "max_time_ms": 0.0324579999999991,
+        "peak_memory_kb": 15.4375,
+        "nodes_visited": 90,
+        "path_length": 5
+      },
+      {
+        "avg_time_ms": 0.13612466666666767,
+        "min_time_ms": 0.13149999999999967,
+        "max_time_ms": 0.14483300000000393,
+        "peak_memory_kb": 60.75,
+        "nodes_visited": 439,
+        "path_length": 8
+      },
+      {
+        "avg_time_ms": 0.2913193333333337,
+        "min_time_ms": 0.2785829999999989,
+        "max_time_ms": 0.2991249999999973,
+        "peak_memory_kb": 89.15625,
+        "nodes_visited": 940,
+        "path_length": 8
+      },
+      {
+        "avg_time_ms": 0.5198473333333323,
+        "min_time_ms": 0.4903750000000012,
+        "max_time_ms": 0.5452919999999959,
+        "peak_memory_kb": 241.03125,
+        "nodes_visited": 1624,
+        "path_length": 8
+      },
+      {
+        "avg_time_ms": 0.9188886666666682,
+        "min_time_ms": 0.6634579999999988,
+        "max_time_ms": 1.3282080000000043,
+        "peak_memory_kb": 358.671875,
+        "nodes_visited": 1552,
+        "path_length": 7
+      },
+      {
+        "avg_time_ms": 1.7451666666666772,
+        "min_time_ms": 1.6767089999999985,
+        "max_time_ms": 1.8806250000000246,
+        "peak_memory_kb": 981.75,
+        "nodes_visited": 4438,
+        "path_length": 9
+      }
+    ],
+    "dfs": [
+      {
+        "avg_time_ms": 0.011583000000001351,
+        "min_time_ms": 0.010415999999999204,
+        "max_time_ms": 0.013250000000002843,
+        "peak_memory_kb": 5.3671875,
+        "nodes_visited": 21,
+        "path_length": 21
+      },
+      {
+        "avg_time_ms": 0.12609733333333178,
+        "min_time_ms": 0.12366699999999398,
+        "max_time_ms": 0.12812499999999977,
+        "peak_memory_kb": 39.0625,
+        "nodes_visited": 280,
+        "path_length": 280
+      },
+      {
+        "avg_time_ms": 0.4755136666666655,
+        "min_time_ms": 0.4134579999999985,
+        "max_time_ms": 0.5996249999999994,
+        "peak_memory_kb": 99.015625,
+        "nodes_visited": 909,
+        "path_length": 895
+      },
+      {
+        "avg_time_ms": 0.24387533333333072,
+        "min_time_ms": 0.24087499999999457,
+        "max_time_ms": 0.24870899999999974,
+        "peak_memory_kb": 87.71875,
+        "nodes_visited": 481,
+        "path_length": 481
+      },
+      {
+        "avg_time_ms": 1.3019723333333362,
+        "min_time_ms": 1.1933750000000103,
+        "max_time_ms": 1.3902920000000014,
+        "peak_memory_kb": 373.03125,
+        "nodes_visited": 2361,
+        "path_length": 2360
+      },
+      {
+        "avg_time_ms": 2.1803333333333303,
+        "min_time_ms": 2.143040999999984,
+        "max_time_ms": 2.231041999999989,
+        "peak_memory_kb": 616.59375,
+        "nodes_visited": 4284,
+        "path_length": 4284
+      }
+    ]
+  },
+  "dense_scaling": {
+    "sizes": [
+      50,
+      100,
+      200,
+      400,
+      600,
+      800,
+      1000
+    ],
+    "bfs": [
+      {
+        "avg_time_ms": 0.014291666666665925,
+        "min_time_ms": 0.012249999999991434,
+        "max_time_ms": 0.017625000000021096,
+        "peak_memory_kb": 5.625,
+        "nodes_visited": 24,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 0.04623633333333821,
+        "min_time_ms": 0.04470800000000441,
+        "max_time_ms": 0.04858400000001817,
+        "peak_memory_kb": 15.0625,
+        "nodes_visited": 68,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 0.18738900000001002,
+        "min_time_ms": 0.18400000000001748,
+        "max_time_ms": 0.19104200000000238,
+        "peak_memory_kb": 21.9375,
+        "nodes_visited": 174,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 0.4677223333333369,
+        "min_time_ms": 0.44008400000000725,
+        "max_time_ms": 0.486750000000008,
+        "peak_memory_kb": 59.4375,
+        "nodes_visited": 170,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 1.0463193333333325,
+        "min_time_ms": 1.0178750000000014,
+        "max_time_ms": 1.0614579999999874,
+        "peak_memory_kb": 59.4375,
+        "nodes_visited": 232,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 3.4183193333333084,
+        "min_time_ms": 3.3128329999999595,
+        "max_time_ms": 3.589666999999963,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 639,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 4.326610999999999,
+        "min_time_ms": 4.260040999999992,
+        "max_time_ms": 4.363375000000003,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 646,
+        "path_length": 3
+      }
+    ],
+    "dfs": [
+      {
+        "avg_time_ms": 0.04620833333333444,
+        "min_time_ms": 0.04445799999999722,
+        "max_time_ms": 0.04829200000000533,
+        "peak_memory_kb": 9.6171875,
+        "nodes_visited": 49,
+        "path_length": 48
+      },
+      {
+        "avg_time_ms": 0.1483749999999969,
+        "min_time_ms": 0.1463329999999985,
+        "max_time_ms": 0.1514579999999932,
+        "peak_memory_kb": 31.078125,
+        "nodes_visited": 99,
+        "path_length": 99
+      },
+      {
+        "avg_time_ms": 0.6423746666666674,
+        "min_time_ms": 0.6354999999999833,
+        "max_time_ms": 0.6556659999999992,
+        "peak_memory_kb": 87.4921875,
+        "nodes_visited": 199,
+        "path_length": 196
+      },
+      {
+        "avg_time_ms": 2.4726113333333375,
+        "min_time_ms": 2.3496249999999943,
+        "max_time_ms": 2.5769590000000173,
+        "peak_memory_kb": 330.390625,
+        "nodes_visited": 400,
+        "path_length": 400
+      },
+      {
+        "avg_time_ms": 5.683652666666678,
+        "min_time_ms": 5.485250000000025,
+        "max_time_ms": 5.836750000000002,
+        "peak_memory_kb": 683.3515625,
+        "nodes_visited": 599,
+        "path_length": 599
+      },
+      {
+        "avg_time_ms": 9.522138666666624,
+        "min_time_ms": 9.390499999999967,
+        "max_time_ms": 9.67074999999995,
+        "peak_memory_kb": 1201.65625,
+        "nodes_visited": 794,
+        "path_length": 793
+      },
+      {
+        "avg_time_ms": 14.620666666666652,
+        "min_time_ms": 14.539000000000025,
+        "max_time_ms": 14.738749999999968,
+        "peak_memory_kb": 1679.171875,
+        "nodes_visited": 999,
+        "path_length": 999
+      }
+    ]
+  },
+  "tree_scaling": {
+    "sizes": [
+      100,
+      500,
+      1000,
+      5000,
+      10000
+    ],
+    "bfs": [
+      {
+        "avg_time_ms": 0.009930333333333744,
+        "min_time_ms": 0.007874999999990528,
+        "max_time_ms": 0.013291000000026365,
+        "peak_memory_kb": 5.78125,
+        "nodes_visited": 24,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 0.03481966666666706,
+        "min_time_ms": 0.033292000000018085,
+        "max_time_ms": 0.036874999999991775,
+        "peak_memory_kb": 22.625,
+        "nodes_visited": 110,
+        "path_length": 5
+      },
+      {
+        "avg_time_ms": 0.20929166666664814,
+        "min_time_ms": 0.2062499999999634,
+        "max_time_ms": 0.21324999999999816,
+        "peak_memory_kb": 91.03125,
+        "nodes_visited": 879,
+        "path_length": 12
+      },
+      {
+        "avg_time_ms": 0.7521529999999962,
+        "min_time_ms": 0.6532920000000275,
+        "max_time_ms": 0.809416999999979,
+        "peak_memory_kb": 360.15625,
+        "nodes_visited": 2468,
+        "path_length": 8
+      },
+      {
+        "avg_time_ms": 1.4850136666666642,
+        "min_time_ms": 1.368290999999966,
+        "max_time_ms": 1.567708000000001,
+        "peak_memory_kb": 981.78125,
+        "nodes_visited": 5079,
+        "path_length": 9
+      }
+    ],
+    "dfs": [
+      {
+        "avg_time_ms": 0.02961133333330886,
+        "min_time_ms": 0.028458000000008976,
+        "max_time_ms": 0.031833999999952844,
+        "peak_memory_kb": 15.71875,
+        "nodes_visited": 99,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 0.14836099999998575,
+        "min_time_ms": 0.14374999999999805,
+        "max_time_ms": 0.15124999999999167,
+        "peak_memory_kb": 62.3125,
+        "nodes_visited": 494,
+        "path_length": 5
+      },
+      {
+        "avg_time_ms": 0.039291333333320765,
+        "min_time_ms": 0.03670799999999641,
+        "max_time_ms": 0.04354099999998029,
+        "peak_memory_kb": 15.734375,
+        "nodes_visited": 108,
+        "path_length": 12
+      },
+      {
+        "avg_time_ms": 1.2818056666666726,
+        "min_time_ms": 1.2719170000000113,
+        "max_time_ms": 1.2943330000000364,
+        "peak_memory_kb": 367.0,
+        "nodes_visited": 4127,
+        "path_length": 8
+      },
+      {
+        "avg_time_ms": 0.9102080000000049,
+        "min_time_ms": 0.8549159999999834,
+        "max_time_ms": 0.9997910000000276,
+        "peak_memory_kb": 247.53125,
+        "nodes_visited": 2661,
+        "path_length": 9
+      }
+    ]
+  },
+  "grid_path": {
+    "sides": [
+      5,
+      10,
+      15,
+      20,
+      30
+    ],
+    "sizes": [
+      25,
+      100,
+      225,
+      400,
+      900
+    ],
+    "bfs": [
+      {
+        "avg_time_ms": 0.007361000000002023,
+        "min_time_ms": 0.006500000000020378,
+        "max_time_ms": 0.008708000000023919,
+        "peak_memory_kb": 4.1875,
+        "nodes_visited": 25,
+        "path_length": 9
+      },
+      {
+        "avg_time_ms": 0.025791333333358146,
+        "min_time_ms": 0.024208000000025542,
+        "max_time_ms": 0.028458000000008976,
+        "peak_memory_kb": 15.75,
+        "nodes_visited": 100,
+        "path_length": 19
+      },
+      {
+        "avg_time_ms": 0.05408366666668588,
+        "min_time_ms": 0.05333400000001598,
+        "max_time_ms": 0.05525000000000668,
+        "peak_memory_kb": 23.25,
+        "nodes_visited": 225,
+        "path_length": 29
+      },
+      {
+        "avg_time_ms": 0.09912500000003321,
+        "min_time_ms": 0.09858300000004094,
+        "max_time_ms": 0.09966700000002549,
+        "peak_memory_kb": 62.15625,
+        "nodes_visited": 400,
+        "path_length": 39
+      },
+      {
+        "avg_time_ms": 0.23612499999999445,
+        "min_time_ms": 0.2327500000000038,
+        "max_time_ms": 0.23895800000001133,
+        "peak_memory_kb": 91.65625,
+        "nodes_visited": 900,
+        "path_length": 59
+      }
+    ],
+    "dfs": [
+      {
+        "avg_time_ms": 0.009750000000012063,
+        "min_time_ms": 0.009207999999982786,
+        "max_time_ms": 0.01041700000004031,
+        "peak_memory_kb": 4.1796875,
+        "nodes_visited": 25,
+        "path_length": 25
+      },
+      {
+        "avg_time_ms": 0.03495833333335326,
+        "min_time_ms": 0.0344170000000088,
+        "max_time_ms": 0.035708000000023166,
+        "peak_memory_kb": 15.921875,
+        "nodes_visited": 91,
+        "path_length": 91
+      },
+      {
+        "avg_time_ms": 0.08502766666664459,
+        "min_time_ms": 0.08399999999997299,
+        "max_time_ms": 0.08658299999997343,
+        "peak_memory_kb": 24.3125,
+        "nodes_visited": 225,
+        "path_length": 225
+      },
+      {
+        "avg_time_ms": 0.14947200000000235,
+        "min_time_ms": 0.146000000000035,
+        "max_time_ms": 0.15216599999995362,
+        "peak_memory_kb": 64.46875,
+        "nodes_visited": 381,
+        "path_length": 381
+      },
+      {
+        "avg_time_ms": 0.3408196666666585,
+        "min_time_ms": 0.3373329999999952,
+        "max_time_ms": 0.34441699999998576,
+        "peak_memory_kb": 96.953125,
+        "nodes_visited": 871,
+        "path_length": 871
+      }
+    ]
+  },
+  "density_impact": {
+    "densities": [
+      0.01,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.7
+    ],
+    "bfs": [
+      {
+        "avg_time_ms": 0.3158196666666428,
+        "min_time_ms": 0.30766699999995595,
+        "max_time_ms": 0.329874999999924,
+        "peak_memory_kb": 87.25,
+        "nodes_visited": 755,
+        "path_length": 5
+      },
+      {
+        "avg_time_ms": 0.47404133333336,
+        "min_time_ms": 0.462207999999964,
+        "max_time_ms": 0.48920800000007425,
+        "peak_memory_kb": 86.65625,
+        "nodes_visited": 388,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 1.3380696666666452,
+        "min_time_ms": 1.3027920000000526,
+        "max_time_ms": 1.3958339999999847,
+        "peak_memory_kb": 86.53125,
+        "nodes_visited": 705,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 3.0058333333333374,
+        "min_time_ms": 2.917666999999957,
+        "max_time_ms": 3.170416999999981,
+        "peak_memory_kb": 86.46875,
+        "nodes_visited": 875,
+        "path_length": 3
+      },
+      {
+        "avg_time_ms": 1.4795556666666876,
+        "min_time_ms": 1.443833000000061,
+        "max_time_ms": 1.5299589999999696,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 277,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 2.6079583333333454,
+        "min_time_ms": 2.4771670000000023,
+        "max_time_ms": 2.7237500000000248,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 383,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 4.267791666666724,
+        "min_time_ms": 4.156417000000023,
+        "max_time_ms": 4.475583000000061,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 513,
+        "path_length": 2
+      },
+      {
+        "avg_time_ms": 7.929138999999955,
+        "min_time_ms": 7.736208999999938,
+        "max_time_ms": 8.28899999999999,
+        "peak_memory_kb": 86.4375,
+        "nodes_visited": 695,
+        "path_length": 2
+      }
+    ],
+    "dfs": [
+      {
+        "avg_time_ms": 0.6084583333333023,
+        "min_time_ms": 0.6067089999999276,
+        "max_time_ms": 0.6105829999999424,
+        "peak_memory_kb": 121.3984375,
+        "nodes_visited": 882,
+        "path_length": 848
+      },
+      {
+        "avg_time_ms": 2.0534859999999564,
+        "min_time_ms": 2.0319169999999387,
+        "max_time_ms": 2.073290999999977,
+        "peak_memory_kb": 281.0390625,
+        "nodes_visited": 970,
+        "path_length": 966
+      },
+      {
+        "avg_time_ms": 3.862500000000065,
+        "min_time_ms": 3.8287500000000474,
+        "max_time_ms": 3.8845000000000685,
+        "peak_memory_kb": 477.6328125,
+        "nodes_visited": 1000,
+        "path_length": 966
+      },
+      {
+        "avg_time_ms": 7.475791666666676,
+        "min_time_ms": 7.45620800000002,
+        "max_time_ms": 7.497042000000009,
+        "peak_memory_kb": 875.34375,
+        "nodes_visited": 999,
+        "path_length": 993
+      },
+      {
+        "avg_time_ms": 10.843208333333298,
+        "min_time_ms": 10.735624999999915,
+        "max_time_ms": 11.031416999999987,
+        "peak_memory_kb": 1346.1953125,
+        "nodes_visited": 990,
+        "path_length": 990
+      },
+      {
+        "avg_time_ms": 14.445777999999983,
+        "min_time_ms": 14.369084000000033,
+        "max_time_ms": 14.520207999999979,
+        "peak_memory_kb": 1679.0859375,
+        "nodes_visited": 988,
+        "path_length": 988
+      },
+      {
+        "avg_time_ms": 18.018958333333373,
+        "min_time_ms": 17.75645800000003,
+        "max_time_ms": 18.16933300000001,
+        "peak_memory_kb": 2100.5234375,
+        "nodes_visited": 1000,
+        "path_length": 1000
+      },
+      {
+        "avg_time_ms": 25.228930333333363,
+        "min_time_ms": 25.00849999999999,
+        "max_time_ms": 25.5240000000001,
+        "peak_memory_kb": 2951.3671875,
+        "nodes_visited": 1000,
+        "path_length": 1000
+      }
+    ],
+    "edge_counts": [
+      5029,
+      25273,
+      50144,
+      99762,
+      150079,
+      199651,
+      249591,
+      349524
+    ]
+  }
+}
